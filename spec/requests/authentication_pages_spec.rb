@@ -48,22 +48,38 @@ describe "Authentication" do
     
       describe "in the user controller" do
       
-      describe "visit the edit page" do
-        before { visit edit_user_path(user)}
-        it { should have_selector('title',text:"Sign in")}
-      end
+          describe "visit the edit page" do
+            before { visit edit_user_path(user)}
+            it { should have_selector('title',text:"Sign in")}
+          end
       
-      describe "submitting to the update action" do
-        before { put user_path(user)}
-        specify { response.should redirect_to(signin_path) }
-      end
+          describe "submitting to the update action" do
+            before { put user_path(user)}
+            specify { response.should redirect_to(signin_path) }
+          end
       
-      describe "visiting the user index" do
-        before { visit users_path }
-        it { should have_selector('title',text:'Sign in')}
+          describe "visiting the user index" do
+            before { visit users_path }
+            it { should have_selector('title',text:'Sign in')}
+          end
       end
-    end
     
+      describe "in the micropost controller" do
+        
+        describe "submmiting to the create action" do
+          before  { post microposts_path }
+          specify { response.should redirect_to signin_path}
+        end
+        
+        describe "submmiting to the destroy action" do
+          before  do
+            micropost=FactoryGirl.create(:micropost)
+            delete micropost_path(micropost)
+          end
+          specify { response.should redirect_to signin_path }
+        end
+        
+      end
     
   end
   
